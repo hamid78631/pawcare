@@ -3,13 +3,17 @@ import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/booking.dto';
 import { BookingStatus } from './entities/booking.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles/roles.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { UserRole } from '../users/entities/user.entity';
 
 @Controller('bookings')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 
+  @Roles(UserRole.OWNER)
   @Post()
   create(@Body() dto: CreateBookingDto, @CurrentUser() user) {
     return this.bookingService.create(dto, user.id);
