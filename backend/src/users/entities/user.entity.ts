@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
 import {Column , Entity , OneToMany, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
 import { Animal } from '../../animals/entities/animal.entity';
-import { SitterProfile } from 'src/sitter-profile/entities/sitter-profile.entity';
+import { SitterProfile } from '../../sitter-profile/entities/sitter-profile.entity';
 export enum UserRole {
     OWNER = 'owner', 
     SITTER = 'sitter'

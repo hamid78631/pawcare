@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { IsArray, IsBoolean, IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { acceptedAnimalTypes } from '../entities/sitter-profile.entity';
 
 export class CreateSitterProfileDto {
@@ -18,4 +18,8 @@ export class CreateSitterProfileDto {
   @IsArray()
   @IsEnum(acceptedAnimalTypes, { each: true })
   acceptedAnimalTypes?: acceptedAnimalTypes[];
+
+  @IsOptional()
+  @IsBoolean()
+  isAvailable?: boolean;
 }

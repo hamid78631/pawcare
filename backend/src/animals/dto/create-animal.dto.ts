@@ -8,7 +8,7 @@ export class CreateAnimalDto{
 
     @IsEnum(AnimalType)
     @IsOptional()
-    type : AnimalType ; 
+    species : AnimalType ; 
 
     @IsOptional()
     @IsString()

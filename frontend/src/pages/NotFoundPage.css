@@ -1,0 +1,108 @@
+.notfound-page {
+  min-height: 100vh;
+  background: var(--green-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.notfound-container {
+  text-align: center;
+  max-width: 480px;
+  animation: fadeSlideUp 0.6s ease-out forwards;
+}
+
+.notfound-code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 5rem;
+  font-weight: 800;
+  color: var(--green-primary);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.notfound-paw {
+  color: var(--orange-cta);
+  animation: pawBounce 1.2s infinite ease-in-out;
+}
+
+.notfound-image {
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto 16px;
+  display: block;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.1));
+}
+
+.notfound-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--green-primary);
+  margin-bottom: 8px;
+}
+
+.notfound-desc {
+  color: var(--text-gray);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.notfound-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--orange-cta);
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 12px 28px;
+  border-radius: 999px;
+  transition: background-color 0.2s;
+  font-family: 'Nunito', sans-serif;
+}
+
+.notfound-btn:hover {
+  background-color: var(--orange-cta-hover);
+}
+
+/* Éléments flottants sur les bords */
+.float-el {
+  position: fixed;
+  opacity: 0.12;
+  color: var(--green-primary);
+  animation: floatAround 6s ease-in-out infinite;
+}
+
+.float-el svg { width: 28px; height: 28px; }
+
+.el-1  { top: 8%;  left: 3%;   animation-delay: 0s;    animation-duration: 5s;  }
+.el-2  { top: 20%; left: 8%;   animation-delay: 1s;    animation-duration: 7s;  }
+.el-3  { top: 50%; left: 2%;   animation-delay: 2s;    animation-duration: 6s;  }
+.el-4  { top: 75%; left: 6%;   animation-delay: 0.5s;  animation-duration: 8s;  }
+.el-5  { top: 90%; left: 15%;  animation-delay: 3s;    animation-duration: 5s;  }
+.el-6  { top: 5%;  right: 4%;  animation-delay: 1.5s;  animation-duration: 7s;  }
+.el-7  { top: 25%; right: 6%;  animation-delay: 0s;    animation-duration: 6s;  }
+.el-8  { top: 55%; right: 3%;  animation-delay: 2.5s;  animation-duration: 8s;  }
+.el-9  { top: 78%; right: 8%;  animation-delay: 1s;    animation-duration: 5s;  }
+.el-10 { top: 92%; right: 18%; animation-delay: 3.5s;  animation-duration: 7s;  }
+
+@keyframes floatAround {
+  0%, 100% { transform: translateY(0px) rotate(0deg);   }
+  33%       { transform: translateY(-12px) rotate(8deg); }
+  66%       { transform: translateY(6px) rotate(-6deg);  }
+}
+
+@keyframes pawBounce {
+  0%, 100% { transform: translateY(0) rotate(-10deg); }
+  50% { transform: translateY(-10px) rotate(10deg); }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

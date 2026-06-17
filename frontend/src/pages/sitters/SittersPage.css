@@ -1,0 +1,346 @@
+.sitters-page {
+  min-height: 100vh;
+  background: var(--green-bg);
+}
+
+/* En-tête */
+.sitters-header {
+  background: linear-gradient(135deg, var(--green-primary) 0%, #3a8a64 100%);
+  padding-top: 96px;
+  padding-bottom: 40px;
+}
+
+.sitters-header__inner {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.sitters-header__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.sitters-header__title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.sitters-header__title span {
+  color: var(--orange-cta);
+}
+
+.sitters-header__count {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Filtres */
+.sitters-filters {
+  background: white;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 64px;
+  z-index: 20;
+}
+
+.sitters-filters__inner {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sitters-filter__group {
+  position: relative;
+  flex: 1;
+  min-width: 180px;
+}
+
+.sitters-filter__icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--green-primary);
+  pointer-events: none;
+}
+
+.sitters-filter__input,
+.sitters-filter__select {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1.5px solid rgba(45,106,79,0.2);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: 'Nunito', sans-serif;
+  color: #1a1a1a;
+  background: var(--green-bg);
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.sitters-filter__input:focus,
+.sitters-filter__select:focus {
+  border-color: var(--green-primary);
+}
+
+.sitters-filter__btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--orange-cta);
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  font-family: 'Nunito', sans-serif;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.sitters-filter__btn:hover {
+  background: var(--orange-cta-hover);
+}
+
+/* Grille */
+.sitters-content {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.sitters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* Carte sitter */
+.sitter-card {
+  background: white;
+  border-radius: 20px;
+  padding: 28px 24px 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.sitter-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+}
+
+.sitter-card__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--green-primary);
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 4px;
+  border: 3px solid var(--green-bg);
+  box-shadow: 0 4px 12px rgba(45,106,79,0.25);
+  overflow: hidden;
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+.sitter-card__name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1a2e22;
+  text-align: center;
+}
+
+.sitter-card__city {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  color: var(--text-gray);
+  font-weight: 600;
+}
+
+.sitter-card__bio {
+  font-size: 0.85rem;
+  color: var(--text-gray);
+  line-height: 1.6;
+  text-align: center;
+  flex: 1;
+}
+
+.sitter-card__types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.sitter-card__type {
+  background: rgba(45,106,79,0.08);
+  color: var(--green-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.sitter-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.sitter-card__rate {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--orange-cta);
+}
+
+.sitter-card__price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1a2e22;
+}
+
+.sitter-card__per {
+  font-size: 0.78rem;
+  color: var(--text-gray);
+  font-weight: 600;
+}
+
+.sitter-card__btn {
+  background: var(--green-primary);
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  transition: background 0.2s;
+}
+
+.sitter-card__btn:hover {
+  background: #245a40;
+}
+
+/* Loading */
+.sitters-loading {
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--green-primary);
+}
+
+.sitters-loading__icon {
+  animation: spin 2s linear infinite;
+  margin: 0 auto 16px;
+  display: block;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.sitters-loading p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-gray);
+}
+
+/* Erreur */
+.sitters-error {
+  text-align: center;
+  color: #ef4444;
+  font-weight: 600;
+  padding: 40px;
+}
+
+/* Empty state */
+.sitters-empty {
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--green-primary);
+}
+
+.sitters-empty svg {
+  margin: 0 auto 16px;
+  display: block;
+  opacity: 0.3;
+}
+
+.sitters-empty h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.sitters-empty p {
+  color: var(--text-gray);
+  margin-bottom: 24px;
+}
+
+.sitters-empty__btn {
+  display: inline-block;
+  background: var(--orange-cta);
+  color: white;
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 999px;
+  transition: background 0.2s;
+}
+
+.sitters-empty__btn:hover {
+  background: var(--orange-cta-hover);
+}
+
+.sitters-loadmore {
+  display: flex;
+  justify-content: center;
+  padding: 32px 0 16px;
+}
+
+.sitters-loadmore__btn {
+  padding: 12px 36px;
+  background: white;
+  color: var(--orange-cta);
+  border: 2px solid var(--orange-cta);
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.sitters-loadmore__btn:hover {
+  background: var(--orange-cta);
+  color: white;
+}

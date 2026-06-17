@@ -1,0 +1,288 @@
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* Fond avec un coin coloré en haut à droite traversant ~12% de l'écran */
+  background: linear-gradient(225deg, var(--green-light, #52b788) 0%, var(--green-light, #52b788) 12%, #f7f9fc 12%, #f7f9fc 100%);
+  background-attachment: fixed;
+  font-family: inherit;
+  padding-top: 64px; /* Espace pour laisser la Navbar visible */
+}
+
+.register-layout {
+  display: flex;
+  width: 90%;
+  max-width: 1100px;
+  margin: 3rem auto;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* --- PARTIE VISUELLE & MOTIFS --- */
+.register-visual {
+  flex: 1;
+  /* Motif : Couleur unie avec un léger dégradé pour le dynamisme */
+  background: linear-gradient(135deg, var(--green-light, #52b788) 0%, var(--green-primary, #2d6a4f) 100%);
+  color: #ffffff;
+  padding: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.visual-content {
+  position: relative;
+  z-index: 2;
+  max-width: 480px; /* Agrandissement du conteneur pour laisser plus de place à l'image */
+}
+
+.visual-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.visual-desc {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 3rem;
+}
+
+.animated-image-wrapper {
+  position: relative;
+}
+
+.pet-gif-image {
+  width: 100%;
+  max-width: 100%; /* Agrandissement de l'image (de 85% à 100%) */
+  object-fit: contain;
+  position: relative;
+  z-index: 10;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.15));
+}
+
+/* Animations des motifs (empreintes) */
+.bg-motif {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.5);
+  animation: pulseRotate 4s infinite alternate ease-in-out;
+  z-index: 1;
+}
+
+.paw-1 { top: -30px; left: -20px; transform: rotate(-20deg); animation-delay: 0s; }
+.paw-2 { bottom: 20px; right: -40px; transform: rotate(15deg); animation-delay: 1.5s; }
+.paw-3 { top: 40%; right: -20px; transform: rotate(45deg); animation-delay: 3s; }
+
+@keyframes pulseRotate {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.4; }
+  100% { transform: scale(1.15) rotate(10deg); opacity: 0.8; }
+}
+
+/* --- PARTIE FORMULAIRE --- */
+.register-form-section {
+  flex: 1.2;
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-container {
+  max-width: 450px;
+  margin: 0 auto;
+  width: 100%;
+  /* Animation d'entrée douce pour le formulaire */
+  animation: fadeSlideUp 0.6s ease-out forwards;
+}
+
+.form-header h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #1a202c;
+}
+
+.form-header p {
+  color: #718096;
+  margin-bottom: 2rem;
+}
+
+/* Sélecteur de Rôle */
+.role-selector {
+  display: flex;
+  background: #edf2f7;
+  border-radius: 12px;
+  padding: 0.3rem;
+  margin-bottom: 1.5rem;
+}
+
+.role-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  color: #718096;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.role-btn.active {
+  background: #ffffff;
+  color: var(--green-primary, #2d6a4f);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Erreur */
+.form-error {
+  background: #FEE2E2;
+  color: #DC2626;
+  font-size: 0.875rem;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Deux inputs côte à côte */
+.input-row {
+  display: flex;
+  gap: 12px;
+}
+
+.input-row .input-group {
+  flex: 1;
+}
+
+/* Inputs */
+.input-group {
+  position: relative;
+  margin-bottom: 1.2rem;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a0aec0;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'Nunito', sans-serif;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--green-primary, #2d6a4f); 
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 1rem;
+  background: var(--orange-cta, #f97316);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: 'Nunito', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-submit:hover {
+  background: var(--orange-cta-hover, #ea580c);
+}
+
+.form-options {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin-bottom: 1.5rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+/* Personnalisation de la case à cocher pour matcher avec le thème vert */
+.checkbox-label input {
+  accent-color: var(--green-primary, #2d6a4f);
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: #718096;
+}
+
+.login-link {
+  color: var(--green-primary, #2d6a4f);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+/* Keyframes pour l'animation du formulaire */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive pour mobile */
+@media (max-width: 768px) {
+  .register-layout {
+    flex-direction: column;
+  }
+
+  .register-visual {
+    padding: 2rem 1rem;
+  }
+  
+  .visual-title {
+    font-size: 1.8rem;
+  }
+
+  .pet-gif-image {
+    max-width: 320px;
+  }
+
+  .register-form-section {
+    padding: 2.5rem 1.5rem;
+  }
+}

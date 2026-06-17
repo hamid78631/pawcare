@@ -29,6 +29,12 @@ export class SitterProfileController {
     return this.sitterProfileService.search(city, animalType);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  findMe(@CurrentUser() user) {
+    return this.sitterProfileService.findByUserId(user.id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.sitterProfileService.findOne(+id);

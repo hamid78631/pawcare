@@ -24,6 +24,16 @@ export class BookingController {
     return this.bookingService.findAll();
   }
 
+  @Get('mine')
+  findMine(@CurrentUser() user) {
+    return this.bookingService.findByOwner(user.id);
+  }
+
+  @Get('incoming')
+  findIncoming(@CurrentUser() user) {
+    return this.bookingService.findBySitter(user.id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.bookingService.findOne(+id);

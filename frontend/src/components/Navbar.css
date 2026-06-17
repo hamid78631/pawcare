@@ -1,0 +1,130 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: var(--green-primary);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.navbar__inner {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar__logo-img {
+  height: 62px;
+  max-height: 62px;
+  width: auto;
+  object-fit: contain;
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.navbar__links a {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  transition: color 0.2s;
+}
+
+.navbar__links a:hover {
+  color: white;
+}
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar__login {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  transition: color 0.2s;
+}
+
+.navbar__login:hover {
+  color: white;
+}
+
+.navbar__register {
+  font-size: 0.875rem;
+  font-weight: 700;
+  background-color: var(--orange-cta);
+  color: var(--white);
+  padding: 8px 20px;
+  border-radius: 999px;
+  transition: background-color 0.2s;
+}
+
+.navbar__register:hover {
+  background-color: var(--orange-cta-hover);
+}
+
+.navbar__sitter {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  transition: color 0.2s;
+}
+
+.navbar__sitter:hover {
+  color: white;
+}
+
+.navbar__logout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  background: none;
+  border: 1.5px solid rgba(255,255,255,0.6);
+  padding: 7px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: background 0.2s, color 0.2s;
+}
+
+.navbar__logout:hover {
+  background: white;
+  color: var(--green-primary);
+}
+
+.navbar__nav-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.navbar__nav-link:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+}
