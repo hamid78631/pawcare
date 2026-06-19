@@ -8,5 +8,6 @@ import { SitterProfile } from './entities/sitter-profile.entity';
   imports: [TypeOrmModule.forFeature([SitterProfile])],
   controllers: [SitterProfileController],
   providers: [SitterProfileService],
+  exports : [SitterProfileService]
 })
 export class SitterProfileModule {}

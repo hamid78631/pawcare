@@ -11,5 +11,6 @@ import { EmailModule } from '../email/email.module';
   imports: [TypeOrmModule.forFeature([Booking, SitterProfile, User]), EmailModule],
   controllers: [BookingController],
   providers: [BookingService],
+  exports : [BookingService]
 })
 export class BookingModule {}

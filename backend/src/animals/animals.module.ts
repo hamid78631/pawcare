@@ -7,6 +7,7 @@ import { Animal } from './entities/animal.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Animal])],
   controllers: [AnimalsController],
-  providers: [AnimalsService],
+  providers: [AnimalsService ,],
+  exports : [AnimalsService]
 })
 export class AnimalsModule {}
