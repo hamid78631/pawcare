@@ -5,6 +5,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
+# URL de l'API vue par le navigateur — /backend est proxifié par nginx
+ARG VITE_API_URL=/backend
+ENV VITE_API_URL=$VITE_API_URL
+
 COPY . .
 RUN npm run build
 
