@@ -9,7 +9,6 @@ import { AnimalsModule } from './animals/animals.module';
 import { SitterProfileModule } from './sitter-profile/sitter-profile.module';
 import { BookingModule } from './booking/booking.module';
 import { ReviewModule } from './review/review.module';
-import { AgentModule } from './agent/agent.module';
 
 @Module({
   imports: [
@@ -35,7 +34,6 @@ import { AgentModule } from './agent/agent.module';
     SitterProfileModule,
     BookingModule,
     ReviewModule,
-    AgentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
