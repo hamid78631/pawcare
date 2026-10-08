@@ -10,15 +10,13 @@ from schemas import ChatRequest, ChatResponse
 
 app = FastAPI(title="Pawly API", description="Chatbot pet sitting de PawCare")
 
-# CORS : autorise le front React (autre port = autre "origine") à appeler l'API
+# Autorise toutes les requêtes depuis le front
 app.add_middleware(
     CORSMiddleware,
     allow_origins=os.getenv("CORS_ORIGINS", "http://localhost:5173").split(","),
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Stockage en mémoire : { conversation_id: [messages] }
 # (perdu au redémarrage du serveur — suffisant pour le TP)
 conversations: dict[str, list[dict]] = {}
 
