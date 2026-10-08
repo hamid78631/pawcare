@@ -22,7 +22,7 @@
 1. Le contexte : le sujet du TP
 2. Les concepts fondamentaux d'un LLM
 3. Les outils du cours : uv, Ollama, Groq, Cursor
-4. L'architecture finale du projet
+4. L'architecture finale du projet et le trajet complet d'un message
 5. Chronologie de ce qui a été fait (étapes 0 à 4)
 6. Le code expliqué fichier par fichier
 7. Les erreurs rencontrées et ce qu'elles enseignent
@@ -289,6 +289,78 @@ frontend/src/
 
 **Séparation des responsabilités :** chaque fichier Python a **un seul rôle**. `prompt.py` dit **qui** est le bot, `llm.py` dit **comment** on parle au modèle, `main.py` dit **comment** on l'expose sur le web. C'est le même principe que la séparation controller / service / DTO en NestJS.
 
+### 4.1 Le trajet complet d'un message, de A à Z
+
+Pour tout comprendre d'un coup, suivons **un seul message** à travers toutes les couches du projet. Disons que l'utilisateur a déjà envoyé un premier message (« Je pars une semaine, comment préparer mon chien ? »), et qu'il tape maintenant : **« Et s'il aboie la nuit ? »**.
+
+**① Dans le navigateur : React (`ChatbotWidget.tsx`)**
+
+1. L'utilisateur tape le texte. À chaque frappe, `onChange` appelle `setInput(...)` : le champ est un *input contrôlé*.
+2. Il appuie sur Entrée. Le formulaire déclenche `handleSend`, qui commence par `e.preventDefault()` pour que la page ne se recharge pas.
+3. `input.trim()` donne `"Et s'il aboie la nuit ?"`. Le texte n'est pas vide et aucune réponse n'est en cours (`isLoading` vaut `false`), donc on continue.
+4. React ajoute **tout de suite** la bulle verte de l'utilisateur, vide le champ, efface une éventuelle erreur et passe `isLoading` à `true`. Les « • • • » apparaissent.
+5. `conversationId` contient déjà l'identifiant reçu au premier message, par exemple `"3f2a9c1e-..."`.
+
+**② Le départ de la requête : axios (`chatbotService.ts`)**
+
+6. `chatbotService.sendMessage(text, conversationId)` fait une requête HTTP :
+   ```
+   POST http://localhost:8000/chat
+   Content-Type: application/json
+
+   { "message": "Et s'il aboie la nuit ?", "conversation_id": "3f2a9c1e-..." }
+   ```
+7. La page vient de `localhost:5173` et l'API est sur `localhost:8000` : ce sont **deux origines différentes**. Le navigateur vérifie donc les autorisations **CORS**. Il envoie d'abord une requête de vérification (`OPTIONS`, dite *preflight*), parce que le corps est en JSON. `CORSMiddleware` répond « l'origine `http://localhost:5173` est autorisée », et le navigateur laisse partir le vrai `POST`.
+
+**③ L'arrivée sur le serveur : uvicorn puis FastAPI (`main.py`)**
+
+8. **uvicorn**, qui écoute le port 8000, reçoit la requête et la transmet à l'objet `app`.
+9. FastAPI trouve la route correspondante, `@app.post("/chat")`.
+10. Avant même d'exécuter la fonction, FastAPI **convertit le JSON en objet `ChatRequest`** (`schemas.py`). Pydantic enlève les espaces aux extrémités, vérifie que `message` fait entre 1 et 2000 caractères et que `conversation_id` est une chaîne ou `null`. **Si la validation échoue, FastAPI renvoie directement une erreur 422, et la fonction `chat` n'est jamais appelée.**
+11. La route est écrite en `def` (synchrone) : FastAPI l'exécute dans un **thread** à part, pour ne pas bloquer les autres utilisateurs pendant l'attente de Groq.
+
+**④ Retrouver la conversation : le dictionnaire `conversations`**
+
+12. `req.conversation_id` est rempli, donc on garde cet identifiant. On ne crée **pas** de nouvel UUID.
+13. `conversations.setdefault("3f2a9c1e-...", [])` renvoie la liste **déjà existante**, qui contient les 2 messages du premier échange (la question sur le chien et la réponse de Pawly).
+
+**⑤ Construire la demande au modèle : `llm.py`**
+
+14. `repondre(message, historique)` assemble **la liste complète** :
+    ```
+    [ {system: SYSTEM_PROMPT},                                       ← prompt.py
+      {user: "Je pars une semaine, comment préparer mon chien ?"},   ← historique
+      {assistant: "Pour préparer ton chien..."},                     ← historique
+      {user: "Et s'il aboie la nuit ?"} ]                            ← nouveau message
+    ```
+15. `client.chat.completions.create(model="openai/gpt-oss-20b", messages=..., temperature=0.3)` envoie tout ça à Groq en HTTPS. La clé `GROQ_API_KEY`, lue dans `.env` au démarrage, part dans l'en-tête `Authorization`. Elle ne passe **jamais** par le navigateur.
+
+**⑥ Chez Groq : le LLM**
+
+16. Le modèle lit **toute** la liste. Comme le premier échange en fait partie, il comprend que « il » désigne **le chien**. Il génère la réponse token par token, en suivant les règles du prompt système (ton, format, limites).
+17. Groq renvoie un JSON. Le texte se trouve dans `choices[0].message.content`.
+
+**⑦ Le retour sur le serveur : `main.py`**
+
+18. Si tout s'est bien passé, on **ajoute** la question et la réponse à la liste de cette conversation. Elle contient maintenant 4 messages, prêts pour le tour suivant.
+19. Si Groq a échoué (délai dépassé, réseau, erreur), un `except` transforme l'exception en `HTTPException` (504, 503 ou 502), avec une phrase claire dans `detail`. Dans ce cas, **rien n'est ajouté** à l'historique.
+20. La fonction renvoie `ChatResponse(conversation_id=..., reply=...)`. FastAPI la convertit en JSON :
+    ```json
+    { "conversation_id": "3f2a9c1e-...", "reply": "Si ton chien aboie la nuit, ..." }
+    ```
+
+**⑧ Le retour dans le navigateur : React**
+
+21. axios reçoit la réponse. `setConversationId` reprend le même identifiant, et la réponse est ajoutée à `messages`.
+22. React redessine le composant. La nouvelle bulle blanche est rendue en Markdown par `<ReactMarkdown>`, le `useEffect` fait défiler la zone vers le bas, et `finally` repasse `isLoading` à `false` : les « • • • » disparaissent.
+23. En cas d'erreur, `catch` appelle `getErrorMessage(err)`, qui choisit la phrase à afficher dans l'encadré rouge. S'il n'y a eu aucune réponse, c'est « injoignable ». Pour un 422, c'est « message vide ou trop long ». Sinon, c'est le `detail` envoyé par FastAPI.
+
+**Et quand on clique sur ↺ (nouvelle conversation) ?** React envoie `DELETE /chat/3f2a9c1e-...`, FastAPI fait `conversations.pop(...)` et la liste disparaît du serveur. React remet ensuite `conversationId` à `null` et réaffiche le message d'accueil. Au prochain message, aucun identifiant n'est envoyé : le serveur crée un **nouvel** UUID et une liste vide. Pawly a donc « oublié ».
+
+**Et si une deuxième personne parle à Pawly en même temps ?** Son navigateur a son propre état React, donc son propre `conversationId`, qui pointe vers **une autre liste** dans le dictionnaire. Les deux historiques ne se mélangent jamais : c'est l'**isolation des conversations** demandée par le TP.
+
+**Et le prototype `cli.py` ?** C'est exactement la même logique, sans les couches web (pas de React, pas de HTTP, pas de dictionnaire). L'historique est une simple variable `historique`, et la boucle `while True` remplace les clics. Les étapes ⑤ et ⑥ (`repondre()` → Groq) sont **identiques**, parce que le CLI et l'API partagent le même fichier `llm.py`.
+
 ---
 
 ## 5. Chronologie de ce qui a été fait
@@ -303,7 +375,7 @@ frontend/src/
 
 3. **Choix :** le domaine est le pet sitting, la base est le projet PawCare et le fournisseur est Groq.
 
-4. **Branche Git :** `git checkout -b feature/chatbot-fastapi`. Tout le travail se fait sur cette branche, et `main` reste intacte. Aucun merge et aucun push n'ont été faits. L'étudiant décidera plus tard de fusionner ou non.
+4. **Branche Git :** `git checkout -b feature/chatbot-fastapi`. Tout le travail se fait sur cette branche, et `main` reste intacte. Rien n'a été fusionné dans `main` : la branche a seulement été poussée sur GitHub (`git push`). L'étudiant décidera plus tard de fusionner ou non.
 
 5. **Suppression de l'ancien chatbot NestJS** (commit `chore: suppression de l'ancien chatbot NestJS`) :
    - suppression de `backend/src/agent/` (controller, service, outils, DTO) ;
@@ -335,7 +407,7 @@ Création de trois fichiers : `prompt.py`, `llm.py` et `cli.py` (détaillés en 
 
 **Identité définie :**
 
-| | |
+| Élément | Description |
 |---|---|
 | Nom | **Pawly** 🐾 |
 | Domaine | Le pet sitting : préparer une garde, choisir un sitter, s'occuper d'un animal confié |
@@ -360,6 +432,7 @@ Installation de `react-markdown`, création de `chatbotService.ts`, `ChatbotWidg
 **Historique des commits sur la branche :**
 
 ```
+7f57be3 docs: guide d'explication du chatbot Pawly
 690fde6 feat(frontend): widget Pawly connecte a FastAPI
 b34652a feat(chatbot-api): routes FastAPI /health, /chat, DELETE /chat/{id}
 80818a2 feat: prompt system , appel groq et boucle cli
