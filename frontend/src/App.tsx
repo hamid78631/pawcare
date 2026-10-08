@@ -9,6 +9,7 @@ import SitterProfilePage from './pages/sitters/SitterProfilePage';
 import TermsPage from './pages/TermsPage';
 import AccountPage from './pages/AccountPage';
 import NotFoundPage from './pages/NotFoundPage';
+import ChatbotWidget from './components/ChatbotWidget';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
@@ -39,6 +40,7 @@ export default function App() {
         } />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <ChatbotWidget />
     </BrowserRouter>
   );
 }
